@@ -20,8 +20,8 @@ RTX 5060 是 Blackwell（sm_120），需要 CUDA 12.8+ 的工具链；官方预�
 系统里**没有** node 和 npm。可用的 node 来自 DSH 自带的运行时：
 
 ```
-C:\Users\morn\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe   # v24.21.0
-C:\Users\morn\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm\bin\pnpm.mjs
+%USERPROFILE%\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe   # v24.21.0
+%USERPROFILE%\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\pnpm\bin\pnpm.mjs
 ```
 
 需要 npm 时单独装一份（不污染系统）：

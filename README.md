@@ -1,6 +1,8 @@
 # deepseek-harness-used-by-morn
 
-本机两套东西的版本化归档，**私有仓库**（GitHub: `Morn-Lab/deepseek-harness-used-by-morn`）。只放源码、文档与可复现脚本；依赖、模型权重、运行时与账号数据不进库。本地目录名仍是 `Documents\deepseek-harness`。
+本机两套东西的版本化归档，**公开仓库**（GitHub: `Morn-Lab/deepseek-harness-used-by-morn`）。只放源码、文档与可复现脚本；依赖、模型权重、运行时与账号数据不进库。本地目录名仍是 `Documents\deepseek-harness`。
+
+`qq-agent/` 来自 MIT 许可的上游项目，许可证见 [LICENSE](LICENSE)，派生关系与本地改动清单见 [NOTICE.md](NOTICE.md)。
 
 ```
 deepseek-harness/
