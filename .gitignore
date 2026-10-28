@@ -1,0 +1,22 @@
+# 这个仓库只放源码、文档与可复现脚本。
+# 依赖、模型权重、本地运行时、账号数据、运行时插件目录一律不入库。
+
+# ---- qq-agent 运行时与依赖 ----
+qq-agent/node_modules/
+qq-agent/models/
+qq-agent/tools/
+qq-agent/data/
+qq-agent/data-plugin-runtime/
+qq-agent/plugins/
+qq-agent/runtime/
+qq-agent/.qa-local/
+qq-agent/**/config/
+qq-agent/**/data/
+qq-agent/**/logs/
+qq-agent/*.log
+qq-agent/**/*.log
+qq-agent/Thumbs.db
+
+# ---- 本机工作区（DSH 的私人工作成果，不推） ----
+/default-workspace/
+/工作区2/
