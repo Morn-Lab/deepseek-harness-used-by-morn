@@ -6,13 +6,15 @@
 
 | 内容 | 路径 |
 | --- | --- |
-| **工作副本（唯一权威）** | `%USERPROFILE%\Documents\qq-agent\0.5(unfinished)` |
-| 迁移前的旧副本（已归档） | `%USERPROFILE%\Documents\deepseek-harness_archive\2026-10-28-qq-agent-0.5-source\qq-agent\0.5(unfinished)` |
+| **工作副本（唯一权威）** | `%USERPROFILE%\Documents\deepseek-harness\qq-agent` |
+| 仓库根（git 在这里） | `%USERPROFILE%\Documents\deepseek-harness` |
+| 迁移前的副本（已归档，可删） | `%USERPROFILE%\Documents\deepseek-harness_archive\2026-10-28-qq-agent-move\` |
+| 更早的副本（已归档） | `%USERPROFILE%\Documents\deepseek-harness_archive\2026-10-28-qq-agent-0.5-source\qq-agent\0.5(unfinished)` |
 | 原 git 仓库（现在只剩 0.4 与历史） | `<会话工作区>\qq-agent` |
 
-- 迁移提交：`372481d chore: 0.5(unfinished) 迁出仓库，工作副本改由 Documents 承载`（`main` 分支，**未 push**）。
-- 迁移原因：旧位置在 `.dsh\sessions\...` 会话工作区内，换工作区或重装 DSH 后路径失效，而桌面快捷方式指向它。
-- **注意**：`Documents\qq-agent\0.5(unfinished)` 现在**自己有本地 git 仓库**（2026-10-28 建，单提交，无远端；详见第 6 节）。它的内容另有一份快照在 `Documents\deepseek-harness\qq-agent\`，那份推送到 GitHub 公开仓库。
+- 迁移历史：会话工作区 → `Documents\qq-agent\0.5(unfinished)`（提交 `372481d`，未 push）→ 2026-10-28 晚**移进仓库** `Documents\deepseek-harness\qq-agent`，成为唯一一份工作副本。
+- 迁移原因：旧位置在 `.dsh\sessions\...` 会话工作区内，换工作区或重装 DSH 后路径失效，而桌面快捷方式指向它；再往外挪是为了让代码和它的版本控制待在一起，不再有"副本漂移"。
+- **现在只有一份源码。** `models/`、`tools/`、`node_modules/`、`data/` 跟着搬了过来，但都在 `.gitignore` 里，不进仓库、不上 GitHub。
 
 ## 2. 依赖安装（两条命令）
 
@@ -21,7 +23,7 @@
 ```powershell
 $node = "$env:USERPROFILE\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\node\bin\node.exe"
 $npm  = "$env:LOCALAPPDATA\npm-cli\bin\npm-cli.js"
-Set-Location "$env:USERPROFILE\Documents\qq-agent\0.5(unfinished)"
+Set-Location "$env:USERPROFILE\Documents\deepseek-harness\qq-agent"
 
 # 命令 1：装依赖（--allow-remote=all 必须带，原因见第 3 节）
 & $node $npm ci --no-audit --no-fund --allow-remote=all --registry=https://registry.npmmirror.com
@@ -86,7 +88,7 @@ Run npm install before starting QQ Agent.
 1. 双击桌面 `赛博宠物-视觉服务` —— 起本地 llama.cpp 视觉服务（`127.0.0.1:8080`）。黑色控制台窗口是服务本体，**不要关**。
 2. 双击桌面 `赛博宠物-启动机器人` —— 起 Electron 机器人界面。
 
-两个快捷方式都指向 `%USERPROFILE%\Documents\qq-agent\0.5(unfinished)`，工作目录也设成它（脚本按相对路径找 `tools\`、`models\`、`node_modules\`）。
+两个快捷方式都指向 `%USERPROFILE%\Documents\deepseek-harness\qq-agent`，工作目录也设成它（脚本按相对路径找 `tools\`、`models\`、`node_modules\`）。
 
 视觉服务排障见 `docs/vision-service.md`（启动参数、`--image-min-tokens 1024` 的原因、实测延迟）。
 文件来源与 sha256 校验见 `docs/vision-provenance.md`。
@@ -96,7 +98,7 @@ Run npm install before starting QQ Agent.
 如果桌面图标丢了，重建命令（PowerShell）：
 
 ```powershell
-$d = "$env:USERPROFILE\Documents\qq-agent\0.5(unfinished)"
+$d = "$env:USERPROFILE\Documents\deepseek-harness\qq-agent"
 $w = New-Object -ComObject WScript.Shell
 
 $s = $w.CreateShortcut("$env:USERPROFILE\Desktop\赛博宠物-视觉服务.lnk")
@@ -110,17 +112,22 @@ $b.IconLocation = "$env:LOCALAPPDATA\CyberPet\bot.ico,0"; $b.Save()
 
 图标文件在 `%LOCALAPPDATA%\CyberPet\`（由 `assets\icon.png` 转换，不占仓库）。丢了就再用 Pillow 转一次，或删掉 `IconLocation` 行用默认图标。
 
-## 6. 版本控制（本地仓库 + 公开快照仓库）
+## 6. 版本控制（仓库根 = 上一层）
 
-2026-10-28 在本目录建立了**本地 git 仓库**，用于给源码/文档/脚本兜底：
+git 仓库在 `%USERPROFILE%\Documents\deepseek-harness`，本目录是它的子目录 `qq-agent/`。远端是 GitHub **公开**仓库 `Morn-Lab/deepseek-harness-used-by-morn`（MIT，`main`）。
 
 - 身份：仓库内局部配置 `Morn <349269406+Morn-Lab@users.noreply.github.com>`，对应 GitHub 账号 `Morn-Lab`（未写全局配置）。
   这是 GitHub 的 noreply 中转地址，由「账号数字 id + 登录名」自动拼成：不需要注册、不设密码，用它提交同样归属到账号，但不暴露真实邮箱。
   真实邮箱只保存在 GitHub 后台，不进任何提交对象；要换身份用 `git config user.email <新地址>`，只影响之后的提交。
-- 远端：本地这个仓库**仍然没有远端**（`git remote` 为空），结构上不可能误 push。
-- 已排除（`.git/info/exclude` + 项目 `.gitignore` 双重）：`node_modules/`（355 MB）、`models/`（1481 MB）、`tools/`（731 MB）、`data/`（账号与会话数据）、`*.log`。
-- 因此仓库只有代码与文档，复制这个 `.git` 目录即可带走全部版本历史。
+- 已排除（项目 `.gitignore`）：`qq-agent/node_modules/`（355 MB）、`qq-agent/models/`（1481 MB）、`qq-agent/tools/`（731 MB）、`qq-agent/data/`（账号与会话数据）、`qq-agent/data-plugin-runtime/`、`qq-agent/plugins/`、`*.log`，以及同级工作区 `/default-workspace/`、`/工作区2/`。
+- 因此仓库里只有代码与文档；`git status` 干净说明运行时目录都被挡住了。
+- 日常用法：在仓库根（或本目录）改完先 `git status` 看差异，`git add -A && git commit -m "..."`，再 `git push`。撤销靠 `git restore` / `git checkout`。
 
-另有一份**快照仓库** `%USERPROFILE%\Documents\deepseek-harness`，结构是 `qq-agent/`（本目录的副本）+ `harness/`（环境记录与下载脚本），推送目标是 GitHub **公开**仓库 `Morn-Lab/deepseek-harness-used-by-morn`。两份会漂移：改代码只在本目录改，再按需同步到快照仓库。
+## 7. 坑：整目录搬家后 `data-plugin-runtime` 里的 junction 会失效
 
-日常用法：改完先 `git status` 看差异，`git add -A && git commit -m "..."`。撤销靠 `git restore` / `git checkout`。
+`qq-agent/data-plugin-runtime/<插件id>/app/<子项>` 下有 **595 个 junction**，全部指回项目自己的子目录（`assets/`、`build/`、`data/`、`docs/`、`electron/` 等），目标是**绝对路径**。
+
+- 用 `Move-Item` 整体搬目录时它们会原样跟着走，但目标仍指向旧绝对路径 → 全部变成死链接。
+- 修法：搬之前先抓清单（相对路径 + 相对目标），搬之后逐个 `Remove-Item`（只删链接本身，别递归）再 `New-Item -ItemType Junction` 重建。
+- 删 junction 不要用 `Remove-Item -Recurse`，PS 5.1 会跟进目标目录真删内容；用 `[System.IO.Directory]::Delete($path, $false)`。
+- 另外：如果目录里还留着旧的 `cmd.exe` 窗口（双击 bat 留下的黑框），它的当前目录会把整个目录钉住，`Move-Item` 直接报"另一个进程正在使用此文件"。搬家前先关掉这些窗口。

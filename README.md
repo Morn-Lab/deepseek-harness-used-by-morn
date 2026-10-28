@@ -6,7 +6,7 @@
 
 ```
 deepseek-harness/
-├── qq-agent/     # 赛博宠物 QQ 机器人 0.5（源码 + 文档），工作副本在 Documents\qq-agent\0.5(unfinished)
+├── qq-agent/     # 赛博宠物 QQ 机器人 0.5（源码 + 文档），本目录就是工作副本
 └── harness/      # 本机环境记录与可复现脚本（Node/npm 装法、镜像渠道、带校验的下载器）
 ```
 
@@ -16,7 +16,7 @@ deepseek-harness/
 
 ## qq-agent/
 
-赛博宠物 0.5 的源码与文档快照。仓库里**没有**这些（都在 `.gitignore` 里）：
+赛博宠物 0.5 的源码与文档，**本目录就是唯一工作副本**（2026-10-28 从 `Documents\qq-agent\0.5(unfinished)` 搬进来，旧路径已归档）。仓库里**没有**这些（都在 `.gitignore` 里）：
 
 - `node_modules/`（341 个包 + electron 运行时）
 - `models/`、`tools/`（Qwen3-VL-2B GGUF 与 llama.cpp，约 2.2GB，按机器下载）
@@ -31,5 +31,5 @@ deepseek-harness/
 
 ## 版本边界
 
-- 本仓库是快照，不是工作副本。改代码在 `Documents\qq-agent\0.5(unfinished)` 里改，再同步过来。
+- 本仓库里的 `qq-agent/` 就是工作副本，不再是"快照"。改代码直接在这里改，`git status` 立刻能看到；`models/`、`tools/`、`node_modules/`、`data/` 被 `.gitignore` 挡住，不会误提交。
 - 不追踪 `K0nd1us/QQ-agent` 上游：本地那份浅克隆停在 `789c7f7`（2026-10-26），不 pull、不 push、不提 issue。
